@@ -105,7 +105,7 @@ while True:
                count = count + 1
                continue  
 # print the output
-print("\n\nLines")
+print("\n\nLines") 
 print("{: ^12} {: ^18} {: ^20}".format("LINE NO.", "DISTANCE", "BEARING"))
 for line in lines: 
      print(' {: ^10}  | {: ^14}  | {: ^17} |'.format(line[0], line[1], line[2]))
