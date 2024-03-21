@@ -85,6 +85,8 @@ def azimuthToBearing(azimuth) :
 counter = 1 # tells you from what line are we from 
 count = 2 # tells you to what is the next line
 lines = []
+lines2 = []
+lines3 = []
 sumLat = 0 
 sumDep = 0
 sumDist = 0 
@@ -115,9 +117,9 @@ while True:
    
    sumLat += latPrint #+= INCEREMENT
    sumDep += depPrint
-   sumDist = float(distance)
+   sumDist = sumDist + float(distance)
    
-   line = (str(counter) + "-" + str(count), distance, bearingPrint, latPrint, depPrint)
+   line = (str(counter) + "-" + str(count), float(distance), bearingPrint, round(latPrint,5), round(depPrint,5))
    lines.append(line)
 
 # Ask for input
@@ -141,35 +143,55 @@ while True:
 LEC = sqrt((sumLat**2) + (sumDep**2))
 REC = sumDist//LEC
 
+line2 = (round(sumLat,5), round(sumDep,5), round(sumDist,5)) # for the table of the summation of values
+lines2.append(line2)
+
+#corrections
+'''
 # Corrections constants
 ccorr_lat = -(sumLat)/sumDist
 ccorr_dep = -(sumDep)/ sumDist
 
-'''
+
 for line in lines: 
     corr_lat = (ccorr_lat) * line[1]
     corr_dep = (ccorr_dep) * line[1]
 
     adjLat = line[3] + corr_lat
-    adjDep = line[4] + corr_dep #here naging line[] sya dahil dun sa list sa 107, nandoon nakalagay yung latprint na lat na need ng corr
+    adjDep = line[4] + corr_dep 
+
+
+line3 = (str(counter) + "-" + str(count), round(corr_lat,5), round(corr_dep,5), round(adjLat,5), round(adjDep,5))
+lines3.append(line3)
 '''
+
+print("\n\nLines") # adds space after the question 'add new line'
+print("{: ^12} {: ^18} {: ^20}  {: ^14} {: ^24}".format("LINE NO.", "DISTANCE", "BEARING", "LATITUDE", "DEPARTURE"))
+for line in lines: 
+     print(' {: ^10}  | {: ^14}  | {: ^17} | {: ^14}   |  {: ^18}   |'.format(line[0], line[1], line[2], line[3], line[4]))
 
 # print the output
 # summation of latitude, departure, distance
-print("∑ Latitude: ", sumLat)
-print("∑ Departure: ", sumDep)
-print("∑ Distance: ", sumDist)
+print("\n\nSummation")
+print("{: ^17} {: ^21} {: ^15} ".format("∑ Latitude", "∑ Departure", "∑ Distance"))
+for line2 in lines2: 
+     print(' {: ^15}  | {: ^15}  | {: ^17} |'.format(line2[0], line2[1], line2[2]))
 
 #LEC and REC
+print("\n")
 print("LEC: ",LEC)
 print("REC: ", REC)
 
+#code for corrections table, unable to print other lines
+'''
+print("\n\nCorrections")
+print("{: ^12}  {: ^12} {: ^23} {: ^23}  {: ^19}".format("LINE NO.", "Latitude Correction", "Departure Correction", "ADJUSTED LATITUDE", "ADJUSTED DEPARTURE"))
+for line3 in lines3: 
+     print(' {: ^10}  | {: ^15}    | {: ^19}  | {: ^20} | {: ^20} |'.format(line3[0], line3[1], line3[2], line3[3], line3[4]))
+'''
 
-print("\n\nLines") # adds space after the question 'add new line'
-print("{: ^12} {: ^18} {: ^20}  {: ^18} {: ^18}".format("LINE NO.", "DISTANCE", "BEARING, LATITUDE, DEPARTURE"))
-for line in lines: # ibig sabihin para sa line na tuple (107) sa loob ng lines na list ang magiging format nya ay below
-     print(' {: ^10}  | {: ^14}  | {: ^17} | {: ^14}  | {: ^14}  |'.format(line[0], line[1], line[2], line[3], line[4]))
-print(' {: ^45}'.format("----------END-----------"))
+print("\n\n")
+print(' {: ^65}'.format("-------------END--------------"))
 
 
 # degree(atan(dep/lat))
